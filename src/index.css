@@ -11,3 +11,34 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+.container {
+  height: 100vh;
+}
+
+.button-a,
+.modal-button-a {
+  background-color: #46139f !important;
+  border: transparent !important;
+  color: #fff;
+}
+
+.button-b,
+.modal-button-b {
+  background-color: #ff7f50 !important;
+  border: transparent !important;
+  color: #fff;
+}
+
+.button-c {
+  color: #000 !important;
+  background-color: #fff !important;
+  border: 1px solid #46139f !important;
+}
+
+.button-b:hover,
+.modal-button-b:hover,
+.button-a:hover,
+.modal-button-a:hover {
+  color: #fff !important;
+}
