@@ -1,14 +1,25 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useMemo } from "react";
 import { Form, Modal, Spinner } from "react-bootstrap";
 import Scrollbars from "react-custom-scrollbars";
 import { useSelector } from "react-redux";
 import PButton from "../components/PButton";
 import { allContacts } from "../store/selectors";
 
-const ModalA = ({ handleClose, show, handleOpenA, handleOpenB, handleUpdateA }) => {
+const ModalA = ({ handleSearchDebounceA, handleKeyUpModalA, setSearchModalA, handleModalCOpen, setContactDetails, setIsEvenA, isEvenA, handleClose, show, handleOpenA, handleOpenB, handleUpdateA }) => {
 
   const allContactList = useSelector(allContacts);
-  // console.log('allContactList ', allContactList)
+
+  // Memoize the filtered data based on the 'showEvenIndices' state
+  const filteredData = useMemo(() => {
+    return isEvenA
+      ? allContactList.contacts_ids.filter((item, index) => index % 2 === 0)
+      : allContactList.contacts_ids;
+  }, [isEvenA, allContactList]);
+
+  const handleContactDetails = (item) => {
+    setContactDetails(allContactList.contacts[item])
+    handleModalCOpen()
+  }
 
   return (
     <Modal
@@ -29,6 +40,19 @@ const ModalA = ({ handleClose, show, handleOpenA, handleOpenB, handleUpdateA }) 
           <PButton onClick={handleOpenB} label={"US Contacts"} className="button-b" />
           <PButton onClick={handleClose} label={"Close"} className="button-c" />
         </div>
+        <div>
+          <Form.Group className="mb-3 mt-3" controlId="exampleForm.ControlInput1">
+            <Form.Control
+              type="number"
+              placeholder="Search..."
+              onChange={(e) => {
+                setSearchModalA(e.target.value)
+                handleSearchDebounceA(e.target.value)
+              }}
+              onKeyUp={handleKeyUpModalA}
+            />
+          </Form.Group>
+        </div>
         <hr />
         {!allContactList ?
           <div className="text-center">
@@ -40,12 +64,14 @@ const ModalA = ({ handleClose, show, handleOpenA, handleOpenB, handleUpdateA }) 
               style={{ minHeight: 50 }}
               onUpdate={handleUpdateA}
             >
-              {allContactList?.contacts_ids?.map((item, index) => (
-                <div>
-                  {item}
-                  <br />
-                </div>
-              ))}
+              <ul className="cursor-pointer" style={{ cursor: "pointer" }}>
+                {filteredData?.map((item, index) => (
+                  <li onClick={() => handleContactDetails(item)}>
+                    {item}
+                    <br />
+                  </li>
+                ))}
+              </ul>
             </Scrollbars>
 
             {/* <Scrollbars
@@ -78,6 +104,8 @@ const ModalA = ({ handleClose, show, handleOpenA, handleOpenB, handleUpdateA }) 
               type={"checkbox"}
               id={`default-checkbox`}
               label={`Only even`}
+              checked={isEvenA}
+              onChange={() => setIsEvenA(prev => !prev)}
             />
           </div>
         </Form>
