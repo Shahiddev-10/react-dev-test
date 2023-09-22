@@ -30,6 +30,9 @@ const Home = () => {
   const handleModalAOpen = () => {
     setShowModalA(true);
     setSearchParams({ show: 'modal-a' });
+    // API Call
+    fetchAllContacts()
+    setSearchModalA('')
   };
 
   const handleModalAClose = () => {
@@ -48,6 +51,7 @@ const Home = () => {
     setSearchParams({ show: 'modal-b' });
     // API Call
     fetchUsContacts()
+    setSearchModalA()
   };
 
   const handleModalCOpen = () => {
