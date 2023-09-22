@@ -5,7 +5,7 @@ import { useSelector } from "react-redux";
 import { allContacts } from "../store/selectors";
 import Scrollbars from "react-custom-scrollbars";
 
-const ModalB = ({ handleKeyUpModalB, setSearchModalB, handleSearchDebounceB, handleModalCOpen, setContactDetails, isEvenB, setIsEvenB, handleClose, show, handleOpenA, handleOpenB, handleUpdateB }) => {
+const ModalB = ({ searchModalB, handleKeyUpModalB, setSearchModalB, handleSearchDebounceB, handleModalCOpen, setContactDetails, isEvenB, setIsEvenB, handleClose, show, handleOpenA, handleOpenB, handleUpdateB }) => {
 
   const allContactList = useSelector(allContacts);
 
@@ -45,11 +45,12 @@ const ModalB = ({ handleKeyUpModalB, setSearchModalB, handleSearchDebounceB, han
             <Form.Control
               type="number"
               placeholder="Search..."
+              value={searchModalB}
               onChange={(e) => {
                 setSearchModalB(e.target.value)
                 handleSearchDebounceB(e.target.value)
               }}
-              onKeyPress={handleKeyUpModalB}
+              onKeyUp={handleKeyUpModalB}
             />
           </Form.Group>
         </div>

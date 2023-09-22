@@ -5,7 +5,7 @@ import { useSelector } from "react-redux";
 import PButton from "../components/PButton";
 import { allContacts } from "../store/selectors";
 
-const ModalA = ({ handleSearchDebounceA, handleKeyUpModalA, setSearchModalA, handleModalCOpen, setContactDetails, setIsEvenA, isEvenA, handleClose, show, handleOpenA, handleOpenB, handleUpdateA }) => {
+const ModalA = ({ searchModalA, handleSearchDebounceA, handleKeyUpModalA, setSearchModalA, handleModalCOpen, setContactDetails, setIsEvenA, isEvenA, handleClose, show, handleOpenA, handleOpenB, handleUpdateA }) => {
 
   const allContactList = useSelector(allContacts);
 
@@ -45,6 +45,7 @@ const ModalA = ({ handleSearchDebounceA, handleKeyUpModalA, setSearchModalA, han
             <Form.Control
               type="number"
               placeholder="Search..."
+              value={searchModalA}
               onChange={(e) => {
                 setSearchModalA(e.target.value)
                 handleSearchDebounceA(e.target.value)

@@ -8,8 +8,7 @@ import ModalC from "../modals/ModalC";
 import { GET_CONTACTS, GET_MORE_CONTACTS, INCREASE_CURRENT_PAGE } from "../store/constants";
 import { currentPage } from "../store/selectors";
 import { ApiCall } from "../utils/apiUtils";
-import { Button, Modal } from "react-bootstrap";
-import debounce from "lodash.debounce";
+import { useDebouncedCallback } from "use-debounce";
 
 const Home = () => {
 
@@ -26,7 +25,6 @@ const Home = () => {
   const [searchModalB, setSearchModalB] = useState('')
   const [isEvenA, setIsEvenA] = useState(false)
   const [isEvenB, setIsEvenB] = useState(false)
-
   const [contactsDetails, setContactDetails] = useState(null)
 
   const handleModalAOpen = () => {
@@ -86,21 +84,21 @@ const Home = () => {
     }
   }
 
-  const handleSearchDebounceA = debounce(async (query) => {
+  const handleSearchDebounceA = useDebouncedCallback(async (value) => {
     try {
-      await fetchAllContacts(query)
+      await fetchAllContacts(value)
     } catch (error) {
-      console.error('Error searching data:', error);
+      console.error(error)
     }
-  }, 400);
+  }, 500);
 
-  const handleSearchDebounceB = debounce(async (query) => {
+  const handleSearchDebounceB = useDebouncedCallback(async (query) => {
     try {
       await fetchUsContacts(query)
     } catch (error) {
-      console.error('Error searching data:', error);
+      console.error(error)
     }
-  }, 400);
+  }, 500);
 
   const handleKeyUpModalA = async (event) => {
     if (event.key === 'Enter') {
@@ -150,6 +148,7 @@ const Home = () => {
         setSearchModalA={setSearchModalA}
         handleKeyUpModalA={handleKeyUpModalA}
         handleSearchDebounceA={handleSearchDebounceA}
+        searchModalA={searchModalA}
       />}
       {showModalB && <ModalB
         isEvenB={isEvenB}
@@ -164,6 +163,7 @@ const Home = () => {
         setSearchModalB={setSearchModalB}
         handleKeyUpModalB={handleKeyUpModalB}
         handleSearchDebounceB={handleSearchDebounceB}
+        searchModalB={searchModalB}
       />}
       {showModalC && <ModalC
         show={showModalC}
